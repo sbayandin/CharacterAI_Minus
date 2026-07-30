@@ -52,19 +52,24 @@ setTimeout(function() {
 
         let elements = dropdownMenu.querySelectorAll('[data-radix-collection-item]'),
             hasSuperRewind = false,
-            lastElement;
+            rewindButton;
+        let i = -1;
         elements.forEach(element => {
+            i++;
+            if (i !== 3) {
+                return;
+            }
             if (element.className.indexOf('super-rewind-button') !== -1) {
                 hasSuperRewind = true;
             }
-            lastElement = element;
+            rewindButton = element;
         });
 
         if (hasSuperRewind) {
             return;
         }
 
-        lastElement.outerHTML += `
+        /*lastElement.outerHTML += `
         <div role="menuitem" onclick="window.__SUPERREWINDFUNC()" class="super-rewind-button relative flex cursor-pointer rounded-spacing-s select-none items-center text-sm outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 focus:bg-accent focus:text-accent-foreground" tabindex="-1" data-orientation="vertical" data-radix-collection-item="">
         
         <button class="z-0 group relative inline-flex items-center box-border appearance-none select-none whitespace-nowrap font-normal subpixel-antialiased overflow-hidden tap-highlight-transparent outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 px-unit-4 min-w-unit-20 h-unit-10 text-md gap-unit-2 rounded-md [&amp;&gt;svg]:max-w-[theme(spacing.unit-8)] data-[pressed=true]:scale-[0.97] transition-transform-colors-opacity motion-reduce:transition-none bg-ghost text-primary data-[hover=true]:opacity-hover justify-between w-full rounded-spacing-s hover:bg-surface-elevation-2" type="button">
@@ -72,20 +77,15 @@ setTimeout(function() {
         </button>
         
         </div>
-        `
+        `;*/
+
+        let rewindButtonElement = rewindButton.querySelector('button');
+        rewindButtonElement.innerHTML = 'ฅ^._.^ฅ SUPER REWIND';
+        rewindButtonElement.onclick = window.__SUPERREWINDFUNC;
     }, 100);
 }, 2000);
 
 window.__SUPERREWINDFUNC = function() {
-    let dropdownMenu = document.body.querySelector('[data-radix-popper-content-wrapper]'),
-        realRewindButton = dropdownMenu.querySelectorAll('[role="menuitem"]')[3];
-
-    if (!realRewindButton) {
-        alert("Something went wrong :( I can't find 'Rewind' button");
-        return;
-    }
-
-    realRewindButton.querySelector('button').click();
     let messages = document
         .getElementById('chat-messages')
         .querySelectorAll('.group.relative.max-w-3xl.m-auto.w-full'),
@@ -112,6 +112,16 @@ window.__SUPERREWINDFUNC = function() {
         .getElementById('chat-input-box')
         .querySelector('textarea');
 
-    textarea.innerHTML = beforeLastMessageStripLines.join("\n\n");
-    textarea.dispatchEvent(new Event('change', { bubbles: true }));
+    let value = beforeLastMessageStripLines.join("\n\n");
+    const nativeInputValueSetter =
+        Object.getOwnPropertyDescriptor(
+            window.HTMLTextAreaElement.prototype,
+            "value"
+        ).set;
+
+    nativeInputValueSetter.call(textarea, value);
+
+    textarea.dispatchEvent(
+        new Event("input", { bubbles: true })
+    );
 }
