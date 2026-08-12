@@ -83,6 +83,7 @@ setTimeout(function() {
         rewindButtonElement.innerHTML = 'ฅ^._.^ฅ SUPER REWIND';
         rewindButtonElement.onclick = window.__SUPERREWINDFUNC;
         rewindButtonElement.parentElement.onclick = window.__SUPERREWINDFUNC;
+        rewindButtonElement.parentElement.parentElement = window.__SUPERREWINDFUNC;
     }, 100);
 }, 2000);
 
