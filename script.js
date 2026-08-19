@@ -44,6 +44,10 @@ setTimeout(function() {
     }, 1000);
 
     setInterval(function() {
+        let chatBodyParentElements = document.getElementById("chat-body").parentElement.children;
+        if (chatBodyParentElements.length == 2) {
+            chatBodyParentElements[1].remove();
+        }
         let dropdownMenu = document.body.querySelector('[data-radix-popper-content-wrapper]');
 
         if (!dropdownMenu) {
