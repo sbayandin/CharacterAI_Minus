@@ -40,6 +40,11 @@ setTimeout(function() {
             if (adBlock) {
                 adBlock.remove();
             }
+          
+            let topAd = document.querySelector('[data-testid="chat-top-ad-band"]');
+            if (topAd) {
+                topAd.remove();
+            }
         });
     }, 1000);
 
@@ -95,7 +100,13 @@ window.__SUPERREWINDFUNC = function() {
     let messages = document
         .getElementById('chat-messages')
         .querySelectorAll('.group.relative.max-w-3xl.m-auto.w-full'),
-        beforeLastMessageLines = messages[1].querySelectorAll('p[node="[object Object]"]');
+        beforeLastMessageLinesObject = messages[1];
+        
+    if (beforeLastMessageLinesObject.innerText == '') {
+        beforeLastMessageLinesObject = messages[2];
+    }
+    
+    let beforeLastMessageLines = beforeLastMessageLinesObject.querySelectorAll('p[node="[object Object]"]');
 
     let beforeLastMessageStripLines = [];
 
